@@ -42,7 +42,6 @@ public class ZigZag {
 		
 		int length = 2;
 		int sign = sequence[0] - sequence[1] ;
-		int max_end_sign = sign;
 		for( int i = 2; i < sequence.length; i++ ) {
 			int newsign = sequence[i - 1] - sequence[i];
 			if( newsign * sign < 0 ) {
