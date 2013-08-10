@@ -1,4 +1,5 @@
 import java.io.File;
+import java.math.BigInteger;
 import java.io.PrintWriter;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
@@ -58,14 +59,14 @@ public class MinScalarProduct {
 		}
 
 		in.close();
-		System.out.println( Long.MAX_VALUE );
-		System.out.println( Long.MIN_VALUE );
+//		System.out.println( Long.MAX_VALUE );
+//		System.out.println( Long.MIN_VALUE );
 		for( int i = 0; i < num_of_case; i++ ) {
-			double result = testcases[i].computeMinProduct();
-			if( result != Integer.MIN_VALUE ) {
+			BigInteger result = testcases[i].computeMinProduct();
+			if( !result.equals( Integer.MIN_VALUE ) ) {
 //				testcases[i].printArrays();
-				System.out.printf( "Case #%d: %d\n", i + 1, (long)result );
-				out.printf( "Case #%d: %d\n", i + 1, (long)result );
+				System.out.printf( "Case #%d: %s\n", i + 1, result.toString() );
+				out.printf( "Case #%d: %s\n", i + 1, result.toString() );
 
 			}
 			else {
