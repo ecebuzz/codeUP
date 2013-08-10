@@ -23,6 +23,7 @@ public class ZigZag {
 			else {
 				throw new Exception( "Input File Error: Can not read in the sequence!" );
 			}
+			in.close();
 			int[] sequence = new int[numbers.length];
 			for( int i = 0; i < sequence.length; i++ ) {
 				sequence[i] = Integer.parseInt( numbers[i] );
@@ -40,20 +41,21 @@ public class ZigZag {
 
 		int max_length = 2;
 		
-		int length = 2;
+//		int length = 2;
 		int sign = sequence[0] - sequence[1] ;
 		for( int i = 2; i < sequence.length; i++ ) {
 			int newsign = sequence[i - 1] - sequence[i];
 			if( newsign * sign < 0 ) {
-				length ++;
+				max_length ++;
+//				length ++;
 			}
 
 			if( newsign != 0 ) {
 				sign = newsign;
 			}
-			if( length > max_length ) {
-				max_length = length;
-			}
+//			if( length > max_length ) {
+//				max_length = length;
+//			}
 		}
 		return max_length;
 	}
