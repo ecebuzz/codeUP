@@ -9,8 +9,8 @@ public class BadNeighbors {
 
 		String inputFileNamePart = "test";
 
-//		for( int k = 1; k <= NUM_OF_FILES; k++ ) {
-		int k = 3;
+		for( int k = 1; k <= NUM_OF_FILES; k++ ) {
+//		int k = 4;
 			String inputFileName = inputFileNamePart + Integer.toString( k ) + ".in";
 			File inputFile = new File( inputFileName );
 			Scanner in = new Scanner( inputFile );
@@ -31,39 +31,36 @@ public class BadNeighbors {
 			System.out.printf( "The maximum funds is %d\n", maxDonations( funds ) );
 
 		}
-//	}
+	}
 
 	public static int maxDonations( int[] funds ) {
 		if( funds.length < 3 ) {
 			return getMax( funds );
 		}
-		int[] sums1 = new int[funds.length];
-		int[] sums2 = new int[funds.length];
-		for( int i = 0; i < 2; i++ ) {
-			sums1[i] = funds[i];
-			sums2[i+1] = funds[i+1];
+		int[]  new_funds = funds.clone();
+		int max1 = 0, max2 = 0;
+		if( funds[0] > funds[funds.length - 1 ] ) {
+			max1 = funds[0]; 
+			new_funds[funds.length - 1] = 0;
 		}
-		for( int i = 2; i < funds.length; i++ ) {
-			sums1[i] = sums1[i-2] + funds[i];
-			sums2[i] = sums2[i-2] + funds[i];
+		else {
+			max1 = 0;
+			new_funds[0] = 0;
 		}
-		sums1[sums1.length-1] = sums2[sums2.length-1];
-		return getMax( sums1 );
-//		for( int i = 0; i < 2; i++ ) {
-//			for( int shift = 2; shift < 4; shift ++ ) {
-//				int sum = funds[i];
-//				int ind = i + shift;
-//				while( ind < ( funds.length - 1 + i) ) {
-//					sum += funds[ind];
-//					ind += shift;
-//				}
-//				if( sum > max_sum ) {
-//					max_sum = sum;
-//				}
-//			}
-//		}
+		max2 = new_funds[1];
+		max1 += new_funds[2];
+
 		
-//		return max_sum;
+		for( int i = 3; i < funds.length; i++ ) {
+			if( i % 2 == 1 ) {
+				max2 = Math.max( max1 - funds[i - 1], max2 ) + new_funds[i];
+			}
+			else {
+				max1 = Math.max( max2 - funds[i - 1], max1 ) + new_funds[i];
+			}
+		}
+		return Math.max( max1, max2 );
+
 	}
 
 	public static int getMax( int[] funds ) {
