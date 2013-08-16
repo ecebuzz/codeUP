@@ -15,8 +15,10 @@ public class BuildBST {
 	 */
 	public static void main( String args[] ) throws Exception {
 //		TreeNode root = new TreeNode();
-		String inOrder  = "8 4 10 9 11 2 5 1 6 3 7";
-		String preOrder = "1 2 4 8 9 10 11 5 3 6 7";
+//		String inOrder  = "8 4 10 9 11 2 5 1 6 3 7";
+//		String preOrder = "1 2 4 8 9 10 11 5 3 6 7";
+		String inOrder  = "4 2 5 1 6 3";
+		String preOrder = "1 2 4 5 3 6";
 		TreeNode root = buildBST( inOrder, preOrder );
 		StringBuilder inOrderT = new StringBuilder();
 		StringBuilder preOrderT = new StringBuilder();
@@ -58,14 +60,16 @@ public class BuildBST {
 		}
 		
 		HashMap<Integer, Integer> inOrderIdx = new HashMap<Integer, Integer>();
-		HashMap<Integer, Integer> preOrderIdx = new HashMap<Integer, Integer>();
+//		HashMap<Integer, Integer> preOrderIdx = new HashMap<Integer, Integer>();
 		for( int i = 0; i < inOrderArr.length; i++ ) {
 			inOrderIdx.put( Integer.parseInt( inOrderArr[i] ), i );
-			preOrderIdx.put( Integer.parseInt( preOrderArr[i] ), i );
+//			preOrderIdx.put( Integer.parseInt( preOrderArr[i] ), i );
 		}
 		
-		return buildBSTrecursion( inOrderArr, preOrderArr, 0, inOrderArr.length - 1, 0, inOrderArr.length - 1,
-				inOrderIdx, preOrderIdx );
+//		return buildBSTrecursion( inOrderArr, preOrderArr, 0, inOrderArr.length - 1, 0, inOrderArr.length - 1,
+//				inOrderIdx, preOrderIdx );
+		
+		return buildBSTiteratively( inOrderArr, preOrderArr, inOrderIdx );
 	}
 	
 	public static String[] subArray( String[] arr, int start, int end ) {
@@ -75,54 +79,65 @@ public class BuildBST {
 		}
 		return newArr;
 	}
-	class Index {
-		public int inStart;
-		public int inEnd;
-		public int preStart;
-		public int preEnd;
-		public Index( int ins, int ine, int pres, int pree ) {
-			inStart = ins;
-			inEnd = ine;
-			preStart = pres;
-			preEnd = pree;
-		}
-	}
+	
+	
 	public static TreeNode buildBSTiteratively( String[] inOrderArr, String[] preOrderArr, 
 			HashMap<Integer, Integer> inOrderIdx ) {
 		LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
-		LinkedList<String[]> inOrderQueue = new LinkedList<String[]>();
-		LinkedList<String[]> preOrderQueue = new LinkedList<String[]>();
+		LinkedList<Index> indices = new LinkedList<Index>();
+//		LinkedList<String[]> inOrderQueue = new LinkedList<String[]>();
+//		LinkedList<String[]> preOrderQueue = new LinkedList<String[]>();
 		
 		Index index = new Index( 0, inOrderArr.length - 1, 0, preOrderArr.length - 1 );
-		int inStart = 0;
-		int inEnd = inOrderArr.length - 1;
-		int preStart = 0;
-		int preEnd = preOrderArr.length -1;
+		indices.add( index );
+//		int inStart = 0;
+//		int inEnd = inOrderArr.length - 1;
+//		int preStart = 0;
+//		int preEnd = preOrderArr.length -1;
 		TreeNode root = new TreeNode( Integer.parseInt( preOrderArr[0] ), null, null );
 		queue.add( root );
+		
+//		inOrderQueue.add( inOrderArr );
+//		preOrderQueue.add( preOrderArr );
 		
 
 		
 		while( !queue.isEmpty() ) {
 			TreeNode current = queue.removeFirst();
-			int rootIdx = inOrderIdx.get( Integer.parseInt( preOrderArr[0] ) );
+			Index curIdx = indices.removeFirst();
+//			String[] curInOrderArr = inOrderQueue.removeFirst();
+//			String[] curPreOrderArr = preOrderQueue.removeFirst();
+			int inStart = curIdx.inStart;
+			int inEnd = curIdx.inEnd;
+			int preStart = curIdx.preStart;
+			int preEnd = curIdx.preEnd;
+//			int rootIdx = inOrderIdx.get( Integer.parseInt( curPreOrderArr[0] ) );
+			int rootIdx = inOrderIdx.get( Integer.parseInt( preOrderArr[preStart] ) );
+
 			if( inStart < rootIdx ) {
+//				current.left = new TreeNode( Integer.parseInt( curPreOrderArr[preStart + 1] ), null, null );
 				current.left = new TreeNode( Integer.parseInt( preOrderArr[preStart + 1] ), null, null );
+
 				queue.add( current.left );
-				inOrderQueue.add( subArray( inOrderArr, inStart, rootIdx - 1 ) );
-				preOrderQueue.add( subArray( preOrderArr, preStart + 1, preStart + rootIdx - inStart ) );
+//				inOrderQueue.add( subArray( curInOrderArr, inStart, rootIdx - 1 ) );
+//				preOrderQueue.add( subArray( curPreOrderArr, preStart + 1, preStart + rootIdx - inStart ) );
+				indices.add( new Index( inStart, rootIdx - 1, preStart + 1, preStart + rootIdx - inStart) );
 			}
+
 			if( rootIdx < inEnd ) { 
+//				current.right = new TreeNode( Integer.parseInt( curPreOrderArr[preStart + rootIdx - inStart + 1] ), null, null );
 				current.right = new TreeNode( Integer.parseInt( preOrderArr[preStart + rootIdx - inStart + 1] ), null, null );
+
 				queue.add( current.right );
-				inOrderQueue.add( subArray( inOrderArr, rootIdx + 1, inEnd ) );
-				preOrderQueue.add( subArray( preOrderArr, preStart + rootIdx - inStart + 1, preEnd ) );
+//				inOrderQueue.add( subArray( curInOrderArr, rootIdx + 1, inEnd ) );
+//				preOrderQueue.add( subArray( curPreOrderArr, preStart + rootIdx - inStart + 1, preEnd ) );
+				indices.add( new Index( rootIdx + 1, inEnd, preStart + rootIdx - inStart + 1, preEnd ) );
 			}
 			
 			
 		}
 		
-		return null;
+		return root;
 		
 	}
 	
