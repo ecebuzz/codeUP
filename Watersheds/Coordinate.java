@@ -30,4 +30,5 @@ public class Coordinate implements Comparable {
 
 		return 0;
 	}
+	
 }
