@@ -2,14 +2,16 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 
 public class Watersheds {
 	public final static int NUM_OF_MAPS_LIMIT = 100;
+	public final static boolean DEBUG = true;
 	public static void main( String[] args ) throws Exception {
 		
-		String FilenamePart = "test";
+//		String FilenamePart = "test";
 //		String FilenamePart = "B-small-practice";
-//		String FilenamePart = "B-large-practice";
+		String FilenamePart = "B-large-practice";
 
 
 		String inputFilename = FilenamePart + ".in";
@@ -118,13 +120,18 @@ public class Watersheds {
 		PrintWriter out = new PrintWriter( outputFilename );
 		
 		for( int i = 0; i < T; i++ ) {
-			
+
 			System.out.printf( "Case #%d:\n", i + 1 );
 			out.printf( "Case #%d:\n", i + 1 );
 			instances[i].waterSheds();
 
 			char[][] map = instances[i].getMap();
 			int[][] altitudeMap = instances[i].getAltitude();
+			
+			if( DEBUG ) {
+				System.out.println( Arrays.deepToString( altitudeMap ) );
+			}
+			
 			for( int j = 0; j < altitudeMap.length; j++ ) {
 				StringBuilder line = new StringBuilder();
 

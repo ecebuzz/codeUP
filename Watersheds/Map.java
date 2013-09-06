@@ -1,8 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Arrays;
-import java.util.Set;
 
 public class Map {
 	/*
@@ -20,7 +16,6 @@ public class Map {
 	private int[][] altitudeMap;
 	private int height;
 	private int width;
-	private HashMap<Integer, ArrayList<Coordinate>> list;
 	private char curRegion;
 
 	public Map( int height, int width ) {
@@ -32,8 +27,8 @@ public class Map {
 				map[i][j] = '+';
 			}
 		}
+		// Keep the map lexicographically smallest
 		map[0][0] = 'a';
-		list = new HashMap<Integer, ArrayList<Coordinate>>();
 		curRegion = 'a';
 	}
 
@@ -50,43 +45,21 @@ public class Map {
 		if( altitude.length != height || altitude[0].length != width ) {
 			return false;
 		}
-
-		for( int i = 0; i < height; i++ ) {
-			for( int j = 0; j < width; j++ ) {
-				if( list.containsKey( altitude[i][j] ) ) {
-					list.get( altitude[i][j] ).add( new Coordinate( i, j ) );
-				}
-				else {
-					ArrayList<Coordinate> listOfCoordinates = new ArrayList<Coordinate>();
-					listOfCoordinates.add( new Coordinate( i, j ) );
-					list.put( altitude[i][j], listOfCoordinates );
-				}
-			}
-		}
-
-		for( int key : list.keySet() ) {
-			ArrayList<Coordinate> listOfCoordinates = list.get( key );
-			Collections.sort( listOfCoordinates );
-		}
 		this.altitudeMap = altitude.clone() ;
 		return true;
 
 	}
 
 	public void waterSheds() {
-		ArrayList<Integer> altitude = new ArrayList( list.keySet() );
-//		int[] altitude = keys.toArray( new int[keys.size()] );
-		Collections.sort( altitude, Collections.reverseOrder() );
 
-		for( int element : altitude ) {
-			ArrayList<Coordinate> listOfCoordinates = list.get( element );
-			while( !listOfCoordinates.isEmpty() ) {
-				Coordinate cur = listOfCoordinates.remove( 0 );
+		for( int i = 0; i < height; i++ ) {
+			for( int j = 0; j < width; j++ ) {
+				Coordinate cur = new Coordinate( i, j );
 				if( map[cur.x][cur.y] == '+' ) {
 					// Not marked need backpropagation from basins
 					Coordinate next = getNextShed( cur );
 					if( next != null ) {
-						map[cur.x][cur.y] = backpropogate( next );
+						map[cur.x][cur.y] = backpropagte( next );
 					}
 					else {
 						// Find sink
@@ -96,17 +69,15 @@ public class Map {
 				}
 				else {
 					// Already marked, propagate its mark to basins
-					Coordinate next = getNextShed( cur );
-					if( next != null ) {
-						propogate( next, map[cur.x][cur.y] );
-					}
+					propagte( getNextShed( cur ), map[cur.x][cur.y] );
+
 				}
 			}
 		}
 
 	}
 
-	public char backpropogate( Coordinate cur ) {
+	public char backpropagte( Coordinate cur ) {
 		if( cur == null ) { return '+'; }
 
 		if( map[cur.x][cur.y] != '+' ) {
@@ -121,20 +92,21 @@ public class Map {
 			map[cur.x][cur.y] = curRegion; 			
 		}
 		else { 
-			map[cur.x][cur.y] = backpropogate( next ); 
+			map[cur.x][cur.y] = backpropagte( next ); 
 		}
 		return map[cur.x][cur.y];
 	}
 
-	public void propogate( Coordinate cur, char region ) {
+	public void propagte( Coordinate cur, char region ) {
 		
+		if( cur == null ) { return ; }
 		map[cur.x][cur.y] = region;
 		Coordinate next = getNextShed( cur );
 
 
 		if( next != null ) {
 			if( map[next.x][next.y] == '+' ) {
-				propogate( next, region );
+				propagte( next, region );
 			}
 		}
 
@@ -187,11 +159,6 @@ public class Map {
 				minAltitude = altitudeMap[temp.x][temp.y];
 			}
 		}
-//		for( Coordinate element : validCords ) {
-//			if( altitudeMap[element.x][element.y] < minAltitude ) {
-//				result = element;
-//				minAltitude = altitudeMap[element.x][element.y];			}
-//		}
 
 		return result;
 	}
