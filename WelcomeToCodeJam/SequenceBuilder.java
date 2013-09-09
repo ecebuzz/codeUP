@@ -4,12 +4,14 @@ public class SequenceBuilder {
 	public int size;
 	public int cur;
 	public int next;
+	public int[] count;
 
-	public SequenceBuilder() {
+	public SequenceBuilder( String seq ) {
 //		strBuilder = new StringBuilder();
 		cur = 0;
 		next = 1;
-		size = 0;
+		size = 1;
+		count = new int[seq.length()];
 	}
 
 //	public int size() {

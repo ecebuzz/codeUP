@@ -45,69 +45,77 @@ public class SequenceFinder {
 
 
 		for( char element : sequence ) {
-
-
-			if( element  == 'w' ) {
-				SequenceBuilder builder = new SequenceBuilder();
-				builder.size ++;
-
-				ArrayList<SequenceBuilder> list = null;
-				int next = builder.next;
-
-				if( map.containsKey( next ) ) {
-					list = map.get( next );
-					list.add( builder );
-				}
-				else {
-					list = new ArrayList<SequenceBuilder>();
-					list.add( builder );
-					map.put( next, list );
-				}
-				continue;
-			}
-
-			
+//			if( element == 'm' ) {
+//				System.out.println( "Stop!" );
+//			}
 			ArrayList<Integer> indices = null;
 			if( charToIdx.containsKey( element ) ) {
 				indices = charToIdx.get( element );
 			}
-			if( element == 'e' ) {
-//				if( indices.contains( seq.length() - 1 ) ) {
-					System.out.println( "Stop!" );
-//				}
-			}
+			
 			if( indices != null ) {
 				for( int index : indices ) {
 					if( map.containsKey( index ) ) {
+						// Check whether cur is matched with any SequenceBuilder
 						ArrayList<SequenceBuilder> list = map.get( index );
 						if( !list.isEmpty() ) {
-							SequenceBuilder top = list.remove(0);
-							top.size ++;
-							top.cur ++;
-							top.next ++;
-							if( top.size == seq.length() ) {
-								this.count ++;
-								this.count = this.count % MOD_CONST;
-								break;
-							}
-			
-							int next = top.next;
-			
-							if( map.containsKey( next ) ) {
-								list = map.get( next );
-								list.add( top );
+							SequenceBuilder builder = list.get( 0 );
+							builder.count[builder.cur] ++;
+							break;
+						}
+
+
+					}
+					else if( map.containsKey( index - 1 ) ) {
+						// Add to the next of existing SequenceBuilders
+						ArrayList<SequenceBuilder> list = map.get( index - 1 );
+						if( !list.isEmpty() ) {
+							SequenceBuilder builder = list.remove( 0 );
+							builder.size ++;
+							builder.cur ++;
+							builder.next ++;
+							builder.count[builder.cur] ++;
+							if( map.containsKey( builder.cur ) ) {
+								ArrayList<SequenceBuilder> newlist = map.get( builder.cur );
+								newlist.add( builder );
 							}
 							else {
-								list = new ArrayList<SequenceBuilder>();
-								list.add( top );
-								map.put( next, list );
+								ArrayList<SequenceBuilder> newlist = new ArrayList<SequenceBuilder>();
+								newlist.add( builder );
+								map.put( builder.cur, newlist );
 							}
 							break;
 						}
+
 						
+					}
+					else if( index == 0 ){
+						// Start new sequence builder with new 'w'
+						ArrayList<SequenceBuilder> list = new ArrayList<SequenceBuilder>();
+						SequenceBuilder builder = new SequenceBuilder( seq );
+						builder.count[builder.cur] ++;
+						list.add( builder );
+						map.put( 0, list );
+						break;
 					}
 				}
 			}
+			//EndFor
 		}
+		
+		ArrayList<SequenceBuilder> list = null;
+		if( map.containsKey( seq.length() - 1 ) ) {
+			list = map.get( seq.length() - 1 );
+			for( SequenceBuilder builder : list ) {
+				int temp = 1;
+				for( int num : builder.count ) {
+					temp *= num;
+				}
+				count += temp;
+				count = count % MOD_CONST;
+			}
+		}
+		
+		//End scanSequence
 	}
 }
