@@ -13,12 +13,16 @@ public class WelcomeToCodeJam {
 //		String inputStr = "wweellccoommee to code qps jam";
 //		String inputStr = "elcomew elcome to code jam";
 //		String inputStr = "welcome to codejam";
+//		String inputStr = "welcome to code jamjamjamjam";
+//		String inputStr = "wwwlelcocmeme otoo  codde jjam";
 //		SequenceFinder instance = new SequenceFinder( inputStr );
 //		instance.scanSequence();
 //		System.out.printf( "%d", instance.getCount() );
-		
-		
-		String filePart = "test";
+//		/*
+
+//		String filePart = "test";
+//		String filePart = "C-small-practice";
+		String filePart = "C-large-practice";
 		String inputFilename = filePart + ".in";
 		String outputFilename = filePart + ".out";
 		
@@ -43,29 +47,35 @@ public class WelcomeToCodeJam {
 		
 		// Read in and initialize each test case
 		SequenceFinder[] instances = new SequenceFinder[N];
+		PrintWriter indexFile = new PrintWriter( filePart + ".indexed" );
 		for( int i = 0; i < N; i++ ) {
 			if( in.hasNextLine() ) {
 				String str = in.nextLine();
 				instances[i] = new SequenceFinder( str );
+				indexFile.printf( "Case #%d: %s\n", i + 1, str );
 			}
 			else  {
 				throw new Exception( "Input file format error: The number of lines does not match with the number of test cases!" );
 			}
 		}
 		in.close();
+		indexFile.close();
+		
+
+		
 		
 		// Scan each sequence finding the occurence of target subseq
 		PrintWriter out = new PrintWriter( outputFilename );
 		for( int i = 0; i < N; i++ ) {
 			instances[i].scanSequence();
-			System.out.printf( "Case #%d: %4d\n", i + 1, instances[i].getCount() );
-			out.printf( "Case #%d: %4d\n", i + 1, instances[i].getCount() );
+			System.out.printf( "Case #%d: %04d\n", i + 1, instances[i].getCount() );
+			out.printf( "Case #%d: %04d\n", i + 1, instances[i].getCount() );
 		}
 		out.close();
 		
 		System.out.println( "Done!" );
 
-
+//*/
 
 	}
 }
