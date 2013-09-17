@@ -15,10 +15,12 @@ public class WelcomeToCodeJam {
 //		String inputStr = "welcome to codejam";
 //		String inputStr = "welcome to code jamjamjamjam";
 //		String inputStr = "wwwlelcocmeme otoo  codde jjam";
+		String inputStr = "So you've registered. We sent you a welcoming email, to welcome you to code jam. But it's possible that you still don't feel welcomed to code jam. That's why we decided to name a problem \"welcome to code jam.\" After solving this problem, we hope that you'll feel very welcome. Very welcome, that is, to code jam.";
 //		SequenceFinder instance = new SequenceFinder( inputStr );
-//		instance.scanSequence();
-//		System.out.printf( "%d", instance.getCount() );
-//		/*
+		SequenceFinderTree instance = new SequenceFinderTree( inputStr );
+		instance.scanSequence();
+		System.out.printf( "%d", instance.getCount() );
+		/*
 
 //		String filePart = "test";
 //		String filePart = "C-small-practice";
@@ -46,12 +48,13 @@ public class WelcomeToCodeJam {
 		in.nextLine();
 		
 		// Read in and initialize each test case
-		SequenceFinder[] instances = new SequenceFinder[N];
+//		SequenceFinder[] instances = new SequenceFinder[N];
+		SequenceFinderTree[] instances = new SequenceFinderTree[N];
 		PrintWriter indexFile = new PrintWriter( filePart + ".indexed" );
 		for( int i = 0; i < N; i++ ) {
 			if( in.hasNextLine() ) {
 				String str = in.nextLine();
-				instances[i] = new SequenceFinder( str );
+				instances[i] = new SequenceFinderTree( str );
 				indexFile.printf( "Case #%d: %s\n", i + 1, str );
 			}
 			else  {
@@ -75,7 +78,7 @@ public class WelcomeToCodeJam {
 		
 		System.out.println( "Done!" );
 
-//*/
+*/
 
 	}
 }
