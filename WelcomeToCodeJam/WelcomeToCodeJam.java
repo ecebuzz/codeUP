@@ -67,7 +67,7 @@ public class WelcomeToCodeJam {
 
 		
 		
-		// Scan each sequence finding the occurence of target subseq
+		// Scan each sequence finding the occurrence of target subseq
 		PrintWriter out = new PrintWriter( outputFilename );
 		for( int i = 0; i < N; i++ ) {
 			instances[i].scanSequence();
