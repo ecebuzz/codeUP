@@ -15,12 +15,12 @@ public class WelcomeToCodeJam {
 //		String inputStr = "welcome to codejam";
 //		String inputStr = "welcome to code jamjamjamjam";
 //		String inputStr = "wwwlelcocmeme otoo  codde jjam";
-		String inputStr = "So you've registered. We sent you a welcoming email, to welcome you to code jam. But it's possible that you still don't feel welcomed to code jam. That's why we decided to name a problem \"welcome to code jam.\" After solving this problem, we hope that you'll feel very welcome. Very welcome, that is, to code jam.";
+//		String inputStr = "So you've registered. We sent you a welcoming email, to welcome you to code jam. But it's possible that you still don't feel welcomed to code jam. That's why we decided to name a problem \"welcome to code jam.\" After solving this problem, we hope that you'll feel very welcome. Very welcome, that is, to code jam.";
 //		SequenceFinder instance = new SequenceFinder( inputStr );
-		SequenceFinderTree instance = new SequenceFinderTree( inputStr );
-		instance.scanSequence();
-		System.out.printf( "%d", instance.getCount() );
-		/*
+//		SequenceFinderTree instance = new SequenceFinderTree( inputStr );
+//		instance.scanSequence();
+//		System.out.printf( "%d", instance.getCount() );
+//		/*
 
 //		String filePart = "test";
 //		String filePart = "C-small-practice";
@@ -78,7 +78,7 @@ public class WelcomeToCodeJam {
 		
 		System.out.println( "Done!" );
 
-*/
+//*/
 
 	}
 }
