@@ -6,9 +6,9 @@ import java.io.PrintWriter;
 public class RopeIntranet {
 	public static void main( String[] args ) throws Exception {
 
-//		String filePart = "test";
+		String filePart = "test";
 //		String filePart = "A-small-practice";
-		String filePart = "A-large-practice";
+//		String filePart = "A-large-practice";
 
 
 		String inputFilename = filePart + ".in";
