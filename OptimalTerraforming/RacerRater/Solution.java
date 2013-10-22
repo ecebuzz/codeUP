@@ -1,11 +1,54 @@
+import static org.junit.Assert.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import org.junit.Assert;
+import org.junit.Test;
 //import java.util.BigInteger;
 
 public class Solution {
+	@Test
+	public void test() throws Exception {
+		String path = "/home/hcheng2/RacerRater_testcases/";
+		String index = "004";
+		String inputFileName = "input" + index + ".txt";
+		String outputFileName = "output" + index + ".txt";
+		File inputFile = new File(path + inputFileName);
+		File outputFile = new File(path + outputFileName);
+		Scanner in = new Scanner(inputFile);
+		Scanner out = new Scanner(outputFile);	
+		
+		in.useDelimiter("\\Z");
+		String input = in.next();
+		out.useDelimiter("\\Z");
+		String output = out.next();
+		in.close();
+		out.close();
+		ByteArrayInputStream inStream = new ByteArrayInputStream(input.getBytes());
+		// set stdin
+		System.setIn(inStream);
+		
+		// set stdout
+		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+		PrintStream ps = new PrintStream(outStream);
+		System.setOut(ps);
+		
+		main(null);
+		
+		String stdOutput = outStream.toString();
+		
+		Assert.assertEquals(output + "\n", stdOutput);
+	}
+	
 	static class Racer implements Comparable {
 		// Racer class
 		public int racerId;
