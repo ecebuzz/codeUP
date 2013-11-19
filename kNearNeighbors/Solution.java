@@ -97,10 +97,50 @@ public class Solution {
 		 * Given an array of points, find the 
 		 * k nearest points to the origin, using
 		 * add/multiply/subtract/divide
+		 * 
+		 * Assumption:
+		 * 1) The point is represented by its x and y 
+		 *    coordinate values (double);
+		 * 2) The class point implements Comparable;
+		 * 3) The distance is Euclidean distance;
+		 * 4) Points are organized as an object array, Point[].
+		 * 
+		 * Approach:
+		 * Build a max heap ordered by each point's distance to
+		 * the origin of capacity of k using the 
+		 * initial k points of the points array. Then, iterate
+		 * through the rest points, if the new point is closer
+		 * to the origin than the max distance point in the max
+		 * heap, remove the max distance point and add in the new point.
+		 * 
+		 * Additional Data Structure:
+		 * PriorityQueue<Point>: a max heap of points ordered by 
+		 * the distance to the origin. The reason for using max
+		 * heap is its O(1) time complexity of getting the max
+		 * distance point and O(log(k)) time complexity of inserting
+		 * a new point.
+		 * 
+		 * Complexity:
+		 * 1) Time Complexity: Since building a max heap of size k is
+		 *    independent of the input size, therefore it's O(1). Then,
+		 *    the total time complexity depends on the iteration over
+		 *    all the points and removal of the max distance point 
+		 *    and insertion of closer to origin points on the
+		 *    max heap. Therefore, the total time complexity is O(nlog(k)),
+		 *    where n is the total number of points and k is the number
+		 *    of closest points to the origin.
+		 * 2) Space Complexity: The space complexity is O(1).
+		 * 
+		 * @param
+		 * Input: points array, Point[] points
+		 *        size of closer points to origin, int k
+		 * Output: k closest point array, Point[] kClosestPoints
 		 */
-		// Exception Handle
+		// Boundary case
 		if(points == null) { return null; }
+		// Empty point array
 		if(points.length == 0 ) { return new Point[0]; }
+		// Less than k point case
 		if(points.length <= k ) { return points; }
 
 		// Build a max heap with size of k

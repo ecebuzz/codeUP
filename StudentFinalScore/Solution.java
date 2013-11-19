@@ -75,10 +75,15 @@ public class Solution {
 		if(minHeap == null) { return ; }
 
 		if(minHeap.size() < numOfCourseToBeCal) {
+			// If the min heap is not full
 			minHeap.add(score);
 		}
 		else {
+			// The min heap is full
 			if(minHeap.peek() < score) {
+				// The min score is smaller than
+				// the new score, update the min
+				// heap
 				minHeap.poll();
 				minHeap.add(score);
 			}
@@ -105,6 +110,38 @@ public class Solution {
 		/*
 		 * Given a list of test results, return
 		 * the final score for each student.
+		 * 
+		 * Assumption:
+		 * 1) Each student must have at least numOfCourseToBeCal
+		 *    test results;
+		 * 2) Each student is uniquely identified by
+		 *    studentID;
+		 * 3) Both studentID and test score are integers.
+		 * 
+		 * Approach:
+		 * Build a HashMap between studentID and min heap storing
+		 *  5 highest test scores. If the min heap is not full, 
+		 *  put the new test score into the min heap for that student.
+		 *  If the min heap is full and the new test score is higher
+		 *  than the min of the min heap, remove the min score and
+		 *  insert the new score. Otherwise, ignore the test result.
+		 *  Finally, for each student, compute their final scores.
+		 *  
+		 *  Complexity:
+		 *  1) Time complexity: time complexity is O(n), where n is
+		 *     the number of test results.
+		 *  2) Space complexity: space complexity is O(n).
+		 *  
+		 *  Additional Data Structure:
+		 *  1) HashMap<Integer, PriorityQueue<Integer>>: mapping between
+		 *     student ID and min heap of their 5 highest test scores. The
+		 *     reason for using HashMap is because of its O(1) find and add
+		 *     operations.
+		 *  2) PriorityQueue<Integer>: building a min heap holding
+		 *     the 5 highest scores. The reason for using min heap is because
+		 *     it has O(1) min lookup and O(log(k)) insertion/removal operations,
+		 *     where k is the capacity of the min heap.
+		 *     
 		 */
 		// Null case
 		if(resultList == null) { return null; }
@@ -121,11 +158,13 @@ public class Solution {
 
 		for(TestResult result : resultList) {
 			if(studentScores.containsKey(result.studentID)) {
+				// minHeap is created
 				PriorityQueue scores = 
 					studentScores.get(result.studentID);
 				addElementToMinHeap(result.testScore, scores);
 			}
 			else {
+				// minHeap is not created
 				PriorityQueue scores = 
 					new PriorityQueue<Integer>(numOfCourseToBeCal);
 				scores.add(result.testScore);
@@ -134,9 +173,11 @@ public class Solution {
 			}
 		}
 
+		// Buld the map between student ID and their final scores
 		Map<Integer, Double> finalScores = new HashMap<Integer, Double>();
 
 		for(int studentID : studentScores.keySet()) {
+			// For each student calculate their finals cores
 			PriorityQueue<Integer> scores =
 				studentScores.get(studentID);
 			double finalScore = calFinalScore(scores);
